@@ -4,6 +4,7 @@ import "./App.css";
 import data from "./data/data";
 import RecommendationList from "./components/RecommendationList";
 import FormInput from "./components/FormInput";
+import Recommendation from "./components/Recommendation";
 
 const { results } = data;
 
@@ -23,7 +24,6 @@ class App extends Component {
       () => this.setState({ recommendationData: results, loading: false }),
       2000
     );
-    /// this.setState({ recommendationData: results });
   }
 
   updateRecommendationData = newRecommendation => {
@@ -44,7 +44,9 @@ class App extends Component {
           buttonLabel="Save"
           updateData={this.updateRecommendationData}
         />
-        <RecommendationList data={recommendationData} loading={loading} />
+        <RecommendationList data={recommendationData} loading={loading}>
+          {(item, key) => <Recommendation {...item} key={key} />}
+        </RecommendationList>
       </div>
     );
   }

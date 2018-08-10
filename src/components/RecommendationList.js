@@ -1,4 +1,3 @@
-import Recommendation from "./Recommendation";
 import withLoading from "../hoc/withLoading";
 import createList from "../hoc/createList";
 
@@ -8,6 +7,6 @@ const stylesReco = {
   width: "350px"
 };
 
-const RecommendationList = createList(stylesReco)(Recommendation);
+const RecommendationList = createList(stylesReco);
 
 export default withLoading(RecommendationList);
