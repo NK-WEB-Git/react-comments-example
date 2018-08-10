@@ -1,11 +1,9 @@
 import React from "react";
 
-const createList = classList => WrappedComponent => props => {
+const createList = classList => props => {
   return (
     <div style={classList}>
-      {props.data.map((item, index) => (
-        <WrappedComponent {...item} key={item.id || index} />
-      ))}
+      {props.data.map((item, index) => props.children(item, item.id || index))}
     </div>
   );
 };

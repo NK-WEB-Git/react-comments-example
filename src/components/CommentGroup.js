@@ -1,6 +1,7 @@
 import React from "react";
 
 import CommentList from "./CommentList";
+import Comment from "./Comment";
 import FormInput from "./FormInput";
 
 const containerStyle = {
@@ -15,7 +16,6 @@ export default class CommentGroup extends React.Component {
   };
 
   componentDidMount() {
-    // this.setState({ comments: this.props.comments });
     setTimeout(
       () => this.setState({ comments: this.props.comments, loading: false }),
       2000
@@ -34,7 +34,9 @@ export default class CommentGroup extends React.Component {
     const { comments, loading } = this.state;
     return (
       <div style={containerStyle}>
-        <CommentList data={comments} loading={loading} />
+        <CommentList data={comments} loading={loading}>
+          {(item, key) => <Comment comment={item.comment} key={key} />}
+        </CommentList>
         <FormInput
           title="Add a comment"
           buttonLabel="Save"
