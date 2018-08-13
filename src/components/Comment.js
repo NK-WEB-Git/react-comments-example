@@ -6,7 +6,11 @@ const pStyle = {
 };
 
 function Comment({ comment }) {
-  return <p style={pStyle}>{comment}</p>;
+  return (
+    <div>
+      <p style={pStyle}>{comment}</p>
+    </div>
+  );
 }
 
 export default Comment;

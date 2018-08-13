@@ -11,16 +11,28 @@ const hStyle = {
 };
 
 const countCommentsStyle = {
-  paddingTop: "6px"
+  paddingTop: "6px",
+  color: "blue",
+  textDecoration: "underline",
+  cursor: "pointer"
 };
 
 export default class RecommendationTitle extends React.Component {
+  selectedRecommandation = () => {
+    const { id, handleSelectedRecommandation } = this.props;
+    handleSelectedRecommandation(id);
+  };
+
   render() {
-    const { text, countComments } = this.props;
+    const { text, countComments, id } = this.props;
     return (
-      <div style={containerStyle}>
+      <div id={id} style={containerStyle}>
         <h2 style={hStyle}>{text}</h2>
-        <div style={countCommentsStyle}>followers {countComments}</div>
+        <div style={countCommentsStyle}>
+          <span onClick={this.selectedRecommandation}>
+            followers {countComments}
+          </span>
+        </div>
       </div>
     );
   }

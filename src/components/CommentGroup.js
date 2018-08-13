@@ -1,25 +1,34 @@
 import React from "react";
 
-import CommentList from "./CommentList";
+import ContainerList from "./ContainerList";
 import Comment from "./Comment";
 import FormInput from "./FormInput";
+import withHiddenProp from "../hoc/withHiddenProp";
+import withLoading from "../hoc/withLoading";
 
 const containerStyle = {
   border: "2px dashed #eee",
   padding: "10px"
 };
 
-export default class CommentGroup extends React.Component {
+const CommentList = withLoading(ContainerList);
+
+class CommentGroup extends React.Component {
   state = {
     comments: null,
     loading: true
   };
 
-  componentDidMount() {
-    setTimeout(
-      () => this.setState({ comments: this.props.comments, loading: false }),
-      2000
-    );
+  async componentDidMount() {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/comments/${this.props.selectedRecommandation}`
+      );
+      const responseJson = await response.json();
+      this.setState({ comments: responseJson.comments, loading: false });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   updateComments = newComment => {
@@ -46,3 +55,5 @@ export default class CommentGroup extends React.Component {
     );
   }
 }
+
+export default withHiddenProp(CommentGroup);

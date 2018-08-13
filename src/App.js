@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import "./App.css";
 
-import data from "./data/data";
-import RecommendationList from "./components/RecommendationList";
+import ContainerList from "./components/ContainerList";
 import FormInput from "./components/FormInput";
 import Recommendation from "./components/Recommendation";
-
-const { results } = data;
+import withLoading from "./hoc/withLoading";
 
 const styleApp = {
   width: "800px",
   margin: "auto"
 };
+
+const RecommendationList = withLoading(ContainerList);
 
 class App extends Component {
   state = {
@@ -19,19 +19,23 @@ class App extends Component {
     loading: true
   };
 
-  componentDidMount() {
-    setTimeout(
-      () => this.setState({ recommendationData: results, loading: false }),
-      2000
-    );
+  async componentDidMount() {
+    try {
+      const response = await fetch("http://localhost:5000/recommandations");
+      const responseJson = await response.json();
+      this.setState({
+        recommendationData: responseJson.results,
+        loading: false
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   updateRecommendationData = newRecommendation => {
-    this.setState(prevState =>
-      this.setState({
-        recommendationData: [...prevState.recommendationData, newRecommendation]
-      })
-    );
+    this.setState(prevState => ({
+      recommendationData: [...prevState.recommendationData, newRecommendation]
+    }));
   };
 
   render() {
@@ -39,11 +43,7 @@ class App extends Component {
 
     return (
       <div style={styleApp}>
-        <FormInput
-          title="Add a recommendation"
-          buttonLabel="Save"
-          updateData={this.updateRecommendationData}
-        />
+        <FormInput updateData={this.updateRecommendationData} />
         <RecommendationList data={recommendationData} loading={loading}>
           {(item, key) => <Recommendation {...item} key={key} />}
         </RecommendationList>
